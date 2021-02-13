@@ -30,8 +30,7 @@ public class Atendimento {
 	@ManyToMany(mappedBy="atendimentos", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Veterinario> veterinarios;
 	
-	public Atendimento()
-	{
+	public Atendimento() {
 		this.veterinarios = new ArrayList<Veterinario>();
 	}
 
@@ -83,8 +82,8 @@ public class Atendimento {
 		this.paciente = paciente;
 	}
 	
-	
-
-	
-
+	@Override
+	public String toString() {
+		return this.dataHora + " - " + this.observacoes;
+	}
 }

@@ -19,6 +19,7 @@ public class Paciente {
 	private String tutor;
 	private String especie;
 	private Integer idade;
+	private String periodo;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="paciente")
 	private List<Atendimento> atendimentos;
@@ -26,41 +27,61 @@ public class Paciente {
 	public Integer getIdPaciente() {
 		return idPaciente;
 	}
+	
 	public void setIdPaciente(Integer idPaciente) {
 		this.idPaciente = idPaciente;
 	}
+	
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 	public String getTutor() {
 		return tutor;
 	}
+	
 	public void setTutor(String tutor) {
 		this.tutor = tutor;
 	}
+	
 	public String getEspecie() {
 		return especie;
 	}
+	
 	public void setEspecie(String especie) {
 		this.especie = especie;
 	}
+	
 	public Integer getIdade() {
 		return idade;
 	}
+	
 	public void setIdade(Integer idade) {
 		this.idade = idade;
 	}
+	
+	public String getPeriodo() {
+		return this.periodo;
+	}
+	
+	public void setPeriodo(String periodo) {
+		this.periodo = periodo;
+	}
+	
 	public List<Atendimento> getAtendimentos() {
 		return atendimentos;
 	}
+	
 	public void setAtendimentos(List<Atendimento> atendimentos) {
 		this.atendimentos = atendimentos;
 	}
 	
-	
-
-
+	@Override
+	public String toString() {
+		return this.nome + " (" + this.especie + ")" + ", " + this.idade + " " + this.periodo + " - " + this.tutor;
+	}
 }

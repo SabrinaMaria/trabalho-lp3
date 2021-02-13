@@ -19,56 +19,66 @@ public class Veterinario {
 	private Integer idVeterinario;
 	private Date dataNasc;
 	private String nome;
-	private String tempoExperiencia;
+	private Integer tempoExperiencia;
 	private String cpf;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Atendimento> atendimentos; 
 	
-	public Veterinario()
-	{
+	public Veterinario() {
 		this.atendimentos = new ArrayList<Atendimento>();
 	}
 	
 	public List<Atendimento> getAtendimentos() {
 		return atendimentos;
 	}
+	
 	public void setAtendimentos(List<Atendimento> atendimentos) {
 		this.atendimentos = atendimentos;
 	}
+	
 	public Integer getIdVeterinario() {
 		return idVeterinario;
 	}
+	
 	public void setIdVeterinario(Integer idVeterinario) {
 		this.idVeterinario = idVeterinario;
 	}
+	
 	public Date getDataNasc() {
 		return dataNasc;
 	}
+	
 	public void setDataNasc(Date dataNasc) {
 		this.dataNasc = dataNasc;
 	}
+	
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getTempoExperiencia() {
+	
+	public Integer getTempoExperiencia() {
 		return tempoExperiencia;
 	}
-	public void setTempoExperiencia(String tempoExperiencia) {
+	
+	public void setTempoExperiencia(Integer tempoExperiencia) {
 		this.tempoExperiencia = tempoExperiencia;
 	}
+	
 	public String getCpf() {
 		return cpf;
 	}
+	
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	
-	
-
-	
-
+	@Override
+	public String toString() {
+		return this.nome + ", " + this.tempoExperiencia + " anos de experiência";
+	}
 }
