@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +15,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JOptionPane;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,9 +30,10 @@ import com.trabalho.lp3.Application;
 
 @SpringBootApplication
 public class Application {
-	String[] periodos = {"meses", "anos"};
-	String[] pacientes = {};
-	
+	String[] periodos = { "meses", "anos" };
+	private VeterinarioRepository repoVt;
+	private PacienteRepository repoPc;
+
 	private JTextField txtNomePaciente = new JTextField();
 	private JTextField txtTutor = new JTextField();
 	private JTextField txtIdade = new JTextField();
@@ -48,10 +51,11 @@ public class Application {
 
 	private JTextField txtValor = new JTextField();
 	private JTextField txtObservacoes = new JTextField();
+	private JTextField txtHorario = new JTextField();
 	private JFormattedTextField ftDataAtendimento = new JFormattedTextField("DD/MM/AAAA");
-	private JComboBox cbPacientes = new JComboBox(pacientes);
-//	private DefaultListModel model = new DefaultListModel();
-//	private JList list = new JList(model);
+	private JComboBox cbPacientes = new JComboBox();
+	private DefaultListModel model = new DefaultListModel();
+	private JList<Veterinario> jlVeterinarios = new JList(model);
 	private JButton btCadastrarAtendimento = new JButton("Salvar");
 	private JButton btListarAtendimento = new JButton("Listar");
 
@@ -64,7 +68,7 @@ public class Application {
 	private JFrame criaUIPaciente() {
 		JFrame janela = new JFrame("Paciente");
 		janela.setSize(480, 320);
-		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
 
@@ -106,7 +110,7 @@ public class Application {
 	private JFrame criaUIVet() {
 		JFrame janela = new JFrame("Veterinário");
 		janela.setSize(480, 320);
-		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
 
@@ -145,7 +149,7 @@ public class Application {
 	private JFrame criaUIAtendimento() {
 		JFrame janela = new JFrame("Atendimento");
 		janela.setSize(480, 320);
-		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		janela.setLocationRelativeTo(null);
 		janela.setVisible(true);
 
@@ -153,14 +157,24 @@ public class Application {
 		painel.setLayout(new GridLayout(0, 1));
 
 		JLabel lblPacientes = new JLabel("Paciente:");
+		JLabel lblVeterinarios = new JLabel("Veterinários:");
 		JLabel lblData = new JLabel("Data:");
+		JLabel lblHorario = new JLabel("Horário:");
 		JLabel lblValor = new JLabel("Valor:");
 		JLabel lblObservacoes = new JLabel("Observações:");
 
 		painel.add(lblPacientes);
 		painel.add(cbPacientes);
+		painel.add(lblVeterinarios);
+		
+		JScrollPane scroll = new JScrollPane(jlVeterinarios);
+		
+		painel.add(scroll);
+		
 		painel.add(lblData);
 		painel.add(ftDataAtendimento);
+		painel.add(lblHorario);
+		painel.add(txtHorario);
 		painel.add(lblValor);
 		painel.add(txtValor);
 		painel.add(lblObservacoes);
@@ -169,12 +183,26 @@ public class Application {
 		painel.add(new JLabel());
 		painel.add(new JLabel());
 
-		painel.add(btCadastrarPaciente);
-		painel.add(btListarPaciente);
+		painel.add(btCadastrarAtendimento);
+		painel.add(btListarAtendimento);
 
 		janela.getContentPane().setLayout(new BorderLayout());
 
 		janela.getContentPane().add(painel, BorderLayout.CENTER);
+
+		jlVeterinarios.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				System.out.println("== SELECIONADOS == ");
+
+				List<Veterinario> selecionados = jlVeterinarios.getSelectedValuesList();
+
+				for (Veterinario v : selecionados) {
+					System.out.println(v.getNome());
+				}
+			}
+		});
 
 		janela.revalidate();
 
@@ -182,120 +210,146 @@ public class Application {
 	}
 
 	@Bean
-//	public PacienteRepository run(PacienteRepository pc) {
+	public PacienteRepository runPaciente(PacienteRepository pc) {
 //		List<Paciente> pacientes = pc.findByTutor("sabrina");
-//		List<Paciente> pacientes = pc.findByEspecie("gato");
-//		
-//		for (Paciente p: pacientes) {
-//			System.out.println(p);
-//		}
-//		
-//		criaUIPaciente();
-//		
-//		btListarPaciente.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				List<Paciente> pacientes = pc.findAll();
-//				
-//				for (Paciente p: pacientes) {
-//					System.out.println(p);
-//				}
-//			}
-//			
-//		});
-//
-//		btCadastrarPaciente.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String nome = txtNomePaciente.getText();
-//				String idade = txtIdade.getText();
-//				String periodo = (String) cbPeriodo.getSelectedItem();
-//				String especie = txtEspecie.getText();
-//				String tutor = txtTutor.getText();
-//				
-//				Paciente p = new Paciente();
-//				
-//				p.setNome(nome);
-//				p.setIdade(Integer.parseInt(idade));
-//				p.setPeriodo(periodo);
-//				p.setEspecie(especie);
-//				p.setTutor(tutor);
-//				
-//				pc.save(p);
-//				
-//				JOptionPane.showMessageDialog(null, "Paciente cadastrado");
-//			}
-//		});
-//		
-//		return pc;
-//	}
+		List<Paciente> pacientes = pc.findByEspecie("gato");
+		
+		for (Paciente p: pacientes) {
+			System.out.println(p);
+		}
 
-//	public VeterinarioRepository run(VeterinarioRepository vt) {
+		this.repoPc = pc;
+		
+		criaUIPaciente();
+		
+		populaPacientes();
+		
+		btListarPaciente.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<Paciente> pacientes = pc.findAll();
+				
+				for (Paciente p: pacientes) {
+					System.out.println(p);
+				}
+			}
+			
+		});
+
+		btCadastrarPaciente.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String nome = txtNomePaciente.getText();
+				String idade = txtIdade.getText();
+				String periodo = (String) cbPeriodo.getSelectedItem();
+				String especie = txtEspecie.getText();
+				String tutor = txtTutor.getText();
+				
+				Paciente p = new Paciente();
+				
+				p.setNome(nome);
+				p.setIdade(Integer.parseInt(idade));
+				p.setPeriodo(periodo);
+				p.setEspecie(especie);
+				p.setTutor(tutor);
+				
+				pc.save(p);
+				
+				JOptionPane.showMessageDialog(null, "Paciente cadastrado");
+			}
+		});
+		
+		return pc;
+	}
+
+	private void populaPacientes() {
+		List<Paciente> pcs = repoPc.findAll();
+
+		for (int i = 0; i < pcs.size(); i++) {
+			cbPacientes.addItem(pcs.get(i));
+		}
+	}
+
+	@Bean
+	public VeterinarioRepository runVeterinario(VeterinarioRepository vt) {
 //		List<Veterinario> veterinarios = vt.findByNome("luana");
-//		List<Veterinario> veterinarios = vt.findByTempoExperienciaBetween(3, 5);
-//		
-//		for (Veterinario v: veterinarios) {
-//			System.out.println(v);
-//		}
-//		
-//		criaUIVet();
-//		
-//		btListarVet.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				List<Veterinario> veterinarios = vt.findAll();
-//				
-//				for (Veterinario v: veterinarios) {
-//					System.out.println(v);
-//				}
-//			}
-//			
-//		});
-//
-//		btCadastrarVet.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String nome = txtNomeVet.getText();
-//				String tempoExperiencia = txtTempoExperiencia.getText();
-//				String cpf = txtCpfVet.getText();
-//				Date dataNasc = null;
-//
-//				try {
-//					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//					java.util.Date dataConvertida = df.parse(ftDataNascVet.getText());
-//					dataNasc = new Date(dataConvertida.getTime());
-//				} catch (Exception e1) {
-//					System.out.println("Erro convertendo a data");
-//					e1.printStackTrace();
-//				}
-//				
-//				Veterinario v = new Veterinario();
-//				
-//				v.setNome(nome);
-//				v.setTempoExperiencia(Integer.parseInt(tempoExperiencia));
-//				v.setDataNasc(dataNasc);
-//				v.setCpf(cpf);
-//				
-//				vt.save(v);
-//				
-//				JOptionPane.showMessageDialog(null, "Veterinário cadastrado");
-//			}
-//		});
-//		
-//		return vt;
-//	}
+		List<Veterinario> veterinarios = vt.findByTempoExperienciaBetween(3, 5);
+		
+		for (Veterinario v: veterinarios) {
+			System.out.println(v);
+		}
 
-	public AtendimentoRepository run(AtendimentoRepository at) {
+		this.repoVt = vt;
+
+		criaUIVet();
+
+		populaVeterinarios();
+
+		btListarVet.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<Veterinario> veterinarios = vt.findAll();
+
+				for (Veterinario v : veterinarios) {
+					System.out.println(v);
+				}
+			}
+
+		});
+
+		btCadastrarVet.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String nome = txtNomeVet.getText();
+				String tempoExperiencia = txtTempoExperiencia.getText();
+				String cpf = txtCpfVet.getText();
+				Date dataNasc = null;
+
+				try {
+					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					java.util.Date dataConvertida = df.parse(ftDataNascVet.getText());
+					dataNasc = new Date(dataConvertida.getTime());
+				} catch (Exception e1) {
+					System.out.println("Erro convertendo a data");
+					e1.printStackTrace();
+				}
+
+				Veterinario v = new Veterinario();
+
+				v.setNome(nome);
+				v.setTempoExperiencia(Integer.parseInt(tempoExperiencia));
+				v.setDataNasc(dataNasc);
+				v.setCpf(cpf);
+
+				vt.save(v);
+
+				JOptionPane.showMessageDialog(null, "Veterinário cadastrado");
+			}
+		});
+
+		return vt;
+	}
+
+	private void populaVeterinarios() {
+		List<Veterinario> lista = repoVt.findAll();
+
+		for (Veterinario v : lista) {
+			model.addElement(v);
+		}
+	}
+
+	@Bean
+	public AtendimentoRepository runAtendimento(AtendimentoRepository at) {
 //		List<Atendimento> atendimentos = at.findByValorBetween((float) 0, (float) 100);
-//		List<Atendimento> atendimentos = at.findByObservacoes("muitas");
-//		
-//		for (Atendimento a: atendimentos) {
-//			System.out.println(a);
-//		}
+		List<Atendimento> atendimentos = at.findByObservacoes("muitas");
+		
+		for (Atendimento a: atendimentos) {
+			System.out.println(a);
+		}
 
 		criaUIAtendimento();
 
@@ -319,16 +373,12 @@ public class Application {
 				String valor = txtValor.getText();
 				String observacoes = txtObservacoes.getText();
 				Date data = null;
-//				Paciente paciente = new Paciente();
-//
-//				List<Paciente> pcs;
-//
-//				cbPacientes.getSelectedItem();
+				String horario = txtHorario.getText();
 
 				try {
-					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-					java.util.Date dataConvertida = df.parse(ftDataAtendimento.getText());
-					data = new Date(dataConvertida.getTime());
+					SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
+					java.util.Date dataConvertida2 = df2.parse(ftDataAtendimento.getText());
+					data = new Date(dataConvertida2.getTime());
 				} catch (Exception e1) {
 					System.out.println("Erro convertendo a data");
 					e1.printStackTrace();
@@ -338,26 +388,28 @@ public class Application {
 
 				a.setValor(Float.parseFloat(valor));
 				a.setObservacoes(observacoes);
-				a.setDataHora(data);
+				a.setData(data);
+				a.setHorario(horario);
 
+				a = at.save(a);
+				
+				Paciente pac = (Paciente) cbPacientes.getSelectedItem();
+				pac.getAtendimentos().add(a);
+				
+				a.setPaciente((Paciente) cbPacientes.getSelectedItem());
+				
+				for (Veterinario vet: jlVeterinarios.getSelectedValuesList()) {
+					vet.getAtendimentos().add(a);
+				}
+				
+				a.setVeterinarios(jlVeterinarios.getSelectedValuesList());
+				
 				at.save(a);
-
+				
 				JOptionPane.showMessageDialog(null, "Atendimento cadastrado");
 			}
 		});
 
 		return at;
-	}
-
-	@Bean
-	public PacienteRepository lista(PacienteRepository pc) {
-		List<Paciente> pcs = pc.findAll();
-		pacientes = new String [pcs.size()];
-
-		for (int i = 0; i < pcs.size(); i++) {
-			pacientes[i] = pcs.get(i).getNome();
-		}
-
-		return pc;
 	}
 }

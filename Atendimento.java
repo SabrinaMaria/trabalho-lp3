@@ -19,7 +19,8 @@ public class Atendimento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idAtendimento;
-	private Date dataHora;
+	private Date data;
+	private String horario;
 	private Float valor;
 	private String observacoes;
 	
@@ -50,12 +51,20 @@ public class Atendimento {
 		this.idAtendimento = idAtendimento;
 	}
 
-	public Date getDataHora() {
-		return dataHora;
+	public Date getData() {
+		return data;
 	}
 
-	public void setDataHora(Date dataHora) {
-		this.dataHora = dataHora;
+	public void setData(Date data) {
+		this.data = data;
+	}
+	
+	public String getHorario() {
+		return horario;
+	}
+
+	public void setHorario(String horario) {
+		this.horario = horario;
 	}
 
 	public Float getValor() {
@@ -84,6 +93,6 @@ public class Atendimento {
 	
 	@Override
 	public String toString() {
-		return this.dataHora + " - " + this.observacoes;
+		return this.data.toString().substring(0, 9) + " " + this.horario + " - " + this.observacoes;
 	}
 }

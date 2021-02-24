@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class Veterinario {
 	private Integer tempoExperiencia;
 	private String cpf;
 	
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Atendimento> atendimentos; 
 	
 	public Veterinario() {

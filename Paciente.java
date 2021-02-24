@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ public class Paciente {
 	private Integer idade;
 	private String periodo;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="paciente")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="paciente", fetch = FetchType.EAGER)
 	private List<Atendimento> atendimentos;
  	
 	public Integer getIdPaciente() {
