@@ -39,15 +39,22 @@ public class Application {
 	private JTextField txtIdade = new JTextField();
 	private JComboBox cbPeriodo = new JComboBox(periodos);
 	private JTextField txtEspecie = new JTextField();
+	private JTextField txtBuscaTutor = new JTextField();
+	private JTextField txtBuscaEspecie = new JTextField();
 	private JButton btCadastrarPaciente = new JButton("Salvar");
 	private JButton btListarPaciente = new JButton("Listar");
+	private JButton btBuscarPaciente = new JButton("Buscar");
 
 	private JTextField txtNomeVet = new JTextField();
 	private JTextField txtCpfVet = new JTextField();
 	private JFormattedTextField ftDataNascVet = new JFormattedTextField("DD/MM/AAAA");
 	private JTextField txtTempoExperiencia = new JTextField();
+	private JTextField txtBuscaNome = new JTextField();
+	private JTextField txtBuscaExperienciaMin = new JTextField();
+	private JTextField txtBuscaExperienciaMax = new JTextField();
 	private JButton btCadastrarVet = new JButton("Salvar");
 	private JButton btListarVet = new JButton("Listar");
+	private JButton btBuscarVet = new JButton("Buscar");
 
 	private JTextField txtValor = new JTextField();
 	private JTextField txtObservacoes = new JTextField();
@@ -56,8 +63,12 @@ public class Application {
 	private JComboBox cbPacientes = new JComboBox();
 	private DefaultListModel model = new DefaultListModel();
 	private JList<Veterinario> jlVeterinarios = new JList(model);
+	private JTextField txtBuscaObservacoes = new JTextField();
+	private JTextField txtBuscaValorMin = new JTextField();
+	private JTextField txtBuscaValorMax = new JTextField();
 	private JButton btCadastrarAtendimento = new JButton("Salvar");
 	private JButton btListarAtendimento = new JButton("Listar");
+	private JButton btBuscarAtendimento = new JButton("Buscar");
 
 	public static void main(String[] args) {
 		SpringApplicationBuilder builder = new SpringApplicationBuilder(Application.class);
@@ -80,6 +91,8 @@ public class Application {
 		JLabel lblIdade = new JLabel("Idade:");
 		JLabel lblEspecie = new JLabel("Espécie:");
 		JLabel lblTutor = new JLabel("Tutor:");
+		JLabel lblBuscaEspecie = new JLabel("Buscar por espécie:");
+		JLabel lblBuscaTutor = new JLabel("Buscar por tutor:");
 
 		painel.add(lblNome);
 		painel.add(txtNomePaciente);
@@ -91,12 +104,17 @@ public class Application {
 		painel.add(txtEspecie);
 		painel.add(lblTutor);
 		painel.add(txtTutor);
+		painel.add(lblBuscaTutor);
+		painel.add(txtBuscaTutor);
+		painel.add(lblBuscaEspecie);
+		painel.add(txtBuscaEspecie);
 
 		painel.add(new JLabel());
 		painel.add(new JLabel());
 
 		painel.add(btCadastrarPaciente);
 		painel.add(btListarPaciente);
+		painel.add(btBuscarPaciente);
 
 		janela.getContentPane().setLayout(new BorderLayout());
 
@@ -121,6 +139,9 @@ public class Application {
 		JLabel lblDataNasc = new JLabel("Data de nascimento:");
 		JLabel lblTempoExperiencia = new JLabel("Tempo de experiência:");
 		JLabel lblCpf = new JLabel("CPF:");
+		JLabel lblBuscaNome = new JLabel("Buscar por nome:");
+		JLabel lblBuscaExperienciaMin = new JLabel("Buscar por experiência (mínima):");
+		JLabel lblBuscaExperienciaMax = new JLabel("Buscar por experiência (máxima):");
 
 		painel.add(lblNomeVet);
 		painel.add(txtNomeVet);
@@ -130,12 +151,19 @@ public class Application {
 		painel.add(txtTempoExperiencia);
 		painel.add(lblCpf);
 		painel.add(txtCpfVet);
+		painel.add(lblBuscaNome);
+		painel.add(txtBuscaNome);
+		painel.add(lblBuscaExperienciaMin);
+		painel.add(txtBuscaExperienciaMin);
+		painel.add(lblBuscaExperienciaMax);
+		painel.add(txtBuscaExperienciaMax);
 
 		painel.add(new JLabel());
 		painel.add(new JLabel());
 
 		painel.add(btCadastrarVet);
 		painel.add(btListarVet);
+		painel.add(btBuscarVet);
 
 		janela.getContentPane().setLayout(new BorderLayout());
 
@@ -162,15 +190,18 @@ public class Application {
 		JLabel lblHorario = new JLabel("Horário:");
 		JLabel lblValor = new JLabel("Valor:");
 		JLabel lblObservacoes = new JLabel("Observações:");
+		JLabel lblBuscaObservacoes = new JLabel("Buscar por observações:");
+		JLabel lblBuscaValorMin = new JLabel("Buscar por valor (mínima):");
+		JLabel lblBuscaValorMax = new JLabel("Buscar por valor (máxima):");
 
 		painel.add(lblPacientes);
 		painel.add(cbPacientes);
 		painel.add(lblVeterinarios);
-		
+
 		JScrollPane scroll = new JScrollPane(jlVeterinarios);
-		
+
 		painel.add(scroll);
-		
+
 		painel.add(lblData);
 		painel.add(ftDataAtendimento);
 		painel.add(lblHorario);
@@ -179,19 +210,26 @@ public class Application {
 		painel.add(txtValor);
 		painel.add(lblObservacoes);
 		painel.add(txtObservacoes);
+		painel.add(lblBuscaObservacoes);
+		painel.add(txtBuscaObservacoes);
+		painel.add(lblBuscaValorMin);
+		painel.add(txtBuscaValorMin);
+		painel.add(lblBuscaValorMax);
+		painel.add(txtBuscaValorMax);
 
 		painel.add(new JLabel());
 		painel.add(new JLabel());
 
 		painel.add(btCadastrarAtendimento);
 		painel.add(btListarAtendimento);
+		painel.add(btBuscarAtendimento);
 
 		janela.getContentPane().setLayout(new BorderLayout());
 
 		janela.getContentPane().add(painel, BorderLayout.CENTER);
 
 		jlVeterinarios.addListSelectionListener(new ListSelectionListener() {
-			
+
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				System.out.println("== SELECIONADOS == ");
@@ -211,34 +249,51 @@ public class Application {
 
 	@Bean
 	public PacienteRepository runPaciente(PacienteRepository pc) {
-//		List<Paciente> pacientes = pc.findByTutor("sabrina");
-		List<Paciente> pacientes = pc.findByEspecie("gato");
 		
-		for (Paciente p: pacientes) {
-			System.out.println(p);
-		}
-
 		this.repoPc = pc;
-		
+
 		criaUIPaciente();
-		
+
 		populaPacientes();
-		
-		btListarPaciente.addActionListener(new ActionListener() {
-			
+
+		btBuscarPaciente.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<Paciente> pacientes = pc.findAll();
+				String buscaPorTutor = txtBuscaTutor.getText();
+				String buscaPorEspecie = txtBuscaEspecie.getText();
 				
-				for (Paciente p: pacientes) {
+				List<Paciente> pacientes1 = pc.findByTutor(buscaPorTutor);
+				List<Paciente> pacientes2 = pc.findByEspecie(buscaPorEspecie);
+
+				System.out.println("Busca por tutor:");
+				for (Paciente p : pacientes1) {
+					System.out.println(p);
+				}
+				
+				System.out.println("Busca por espécie:");
+				for (Paciente p : pacientes2) {
 					System.out.println(p);
 				}
 			}
-			
+
+		});
+
+		btListarPaciente.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<Paciente> pacientes = pc.findAll();
+
+				for (Paciente p : pacientes) {
+					System.out.println(p);
+				}
+			}
+
 		});
 
 		btCadastrarPaciente.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String nome = txtNomePaciente.getText();
@@ -246,21 +301,21 @@ public class Application {
 				String periodo = (String) cbPeriodo.getSelectedItem();
 				String especie = txtEspecie.getText();
 				String tutor = txtTutor.getText();
-				
+
 				Paciente p = new Paciente();
-				
+
 				p.setNome(nome);
 				p.setIdade(Integer.parseInt(idade));
 				p.setPeriodo(periodo);
 				p.setEspecie(especie);
 				p.setTutor(tutor);
-				
+
 				pc.save(p);
-				
+
 				JOptionPane.showMessageDialog(null, "Paciente cadastrado");
 			}
 		});
-		
+
 		return pc;
 	}
 
@@ -274,18 +329,36 @@ public class Application {
 
 	@Bean
 	public VeterinarioRepository runVeterinario(VeterinarioRepository vt) {
-//		List<Veterinario> veterinarios = vt.findByNome("luana");
-		List<Veterinario> veterinarios = vt.findByTempoExperienciaBetween(3, 5);
-		
-		for (Veterinario v: veterinarios) {
-			System.out.println(v);
-		}
 
 		this.repoVt = vt;
 
 		criaUIVet();
 
 		populaVeterinarios();
+		
+		btBuscarVet.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String buscaPorNome = txtBuscaNome.getText();
+				Integer buscaPorExperienciaMin = Integer.parseInt(txtBuscaExperienciaMin.getText());
+				Integer buscaPorExperienciaMax = Integer.parseInt(txtBuscaExperienciaMax.getText());
+				
+				List<Veterinario> veterinarios1 = vt.findByNome(buscaPorNome);
+				List<Veterinario> veterinarios2 = vt.findByTempoExperienciaBetween(buscaPorExperienciaMin, buscaPorExperienciaMax);
+
+				System.out.println("Busca por nome:");
+				for (Veterinario v : veterinarios1) {
+					System.out.println(v);
+				}
+				
+				System.out.println("Busca por experiência:");
+				for (Veterinario v : veterinarios2) {
+					System.out.println(v);
+				}
+			}
+
+		});
 
 		btListarVet.addActionListener(new ActionListener() {
 
@@ -344,15 +417,33 @@ public class Application {
 
 	@Bean
 	public AtendimentoRepository runAtendimento(AtendimentoRepository at) {
-//		List<Atendimento> atendimentos = at.findByValorBetween((float) 0, (float) 100);
-		List<Atendimento> atendimentos = at.findByObservacoes("muitas");
-		
-		for (Atendimento a: atendimentos) {
-			System.out.println(a);
-		}
 
 		criaUIAtendimento();
 
+		btBuscarAtendimento.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				float valorMin = Float.parseFloat(txtBuscaValorMin.getText());
+				float valorMax = Float.parseFloat(txtBuscaValorMax.getText());
+				String observacoes = txtBuscaObservacoes.getText();
+				
+				List<Atendimento> atendimentos1 = at.findByValorBetween(valorMin, valorMax);
+				List<Atendimento> atendimentos2 = at.findByObservacoes(observacoes);
+
+				System.out.println("Busca por valor:");
+				for (Atendimento a : atendimentos1) {
+					System.out.println(a);
+				}
+				
+				System.out.println("Busca por observações:");
+				for (Atendimento a : atendimentos2) {
+					System.out.println(a);
+				}
+			}
+
+		});
+		
 		btListarAtendimento.addActionListener(new ActionListener() {
 
 			@Override
@@ -392,20 +483,20 @@ public class Application {
 				a.setHorario(horario);
 
 				a = at.save(a);
-				
+
 				Paciente pac = (Paciente) cbPacientes.getSelectedItem();
 				pac.getAtendimentos().add(a);
-				
+
 				a.setPaciente((Paciente) cbPacientes.getSelectedItem());
-				
-				for (Veterinario vet: jlVeterinarios.getSelectedValuesList()) {
+
+				for (Veterinario vet : jlVeterinarios.getSelectedValuesList()) {
 					vet.getAtendimentos().add(a);
 				}
-				
+
 				a.setVeterinarios(jlVeterinarios.getSelectedValuesList());
-				
+
 				at.save(a);
-				
+
 				JOptionPane.showMessageDialog(null, "Atendimento cadastrado");
 			}
 		});
