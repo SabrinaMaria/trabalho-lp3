@@ -191,8 +191,8 @@ public class Application {
 		JLabel lblValor = new JLabel("Valor:");
 		JLabel lblObservacoes = new JLabel("Observações:");
 		JLabel lblBuscaObservacoes = new JLabel("Buscar por observações:");
-		JLabel lblBuscaValorMin = new JLabel("Buscar por valor (mínima):");
-		JLabel lblBuscaValorMax = new JLabel("Buscar por valor (máxima):");
+		JLabel lblBuscaValorMin = new JLabel("Buscar por valor (mínimo):");
+		JLabel lblBuscaValorMax = new JLabel("Buscar por valor (máximo):");
 
 		painel.add(lblPacientes);
 		painel.add(cbPacientes);
